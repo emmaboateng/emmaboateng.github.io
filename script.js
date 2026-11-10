@@ -29,16 +29,53 @@ document.title = `${SITE.name} · Geospatial Portfolio`;
 $("#year").textContent = new Date().getFullYear();
 if (SITE.cv) { const b = $("#cvBtn"); b.href = SITE.cv; b.hidden = false; b.setAttribute("download", ""); }
 
-$("#heroStats").innerHTML = [
-  [PROJECTS.length, "Research projects"],
-  [OUTPUTS.length, "Papers & theses"],
-  [CODE.length, "Shared scripts"]
-].map(([n, l]) => `<div class="stat"><b>${n}</b><span>${l}</span></div>`).join("");
+/* ---------- Hero background: satellite imagery + colour-shaded terrain ---------- */
+(function heroImagery() {
+  if (!window.L || typeof HERO_VIEWS === "undefined" || !HERO_VIEWS.length) return;
+  const SOURCES = {
+    satellite: {
+      label: "Satellite imagery",
+      url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      credit: "Imagery © Esri, Maxar, Earthstar Geographics", sub: ""
+    },
+    terrain: {
+      label: "Colour-shaded terrain (SRTM)",
+      url: "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+      credit: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>, SRTM · <a href="https://opentopomap.org" target="_blank" rel="noopener">OpenTopoMap</a> (CC-BY-SA)', sub: "abc"
+    }
+  };
+  const bg = $("#heroBg"), credit = $("#heroCredit");
+  const layers = HERO_VIEWS.map(v => {
+    const div = document.createElement("div");
+    div.className = "hero-layer";
+    bg.appendChild(div);
+    const src = SOURCES[v.type] || SOURCES.satellite;
+    const map = L.map(div, {
+      zoomControl: false, attributionControl: false, dragging: false, scrollWheelZoom: false,
+      doubleClickZoom: false, boxZoom: false, keyboard: false, touchZoom: false, zoomSnap: 0
+    }).setView(v.center, v.zoom);
+    L.tileLayer(src.url, { maxZoom: 17, subdomains: src.sub || "abc" }).addTo(map);
+    return { div, map, v, src };
+  });
+  let i = 0;
+  function show(n) {
+    layers.forEach((l, j) => l.div.classList.toggle("on", j === n));
+    const l = layers[n];
+    l.map.invalidateSize();
+    credit.innerHTML = `<b>${esc(l.src.label)}</b> · ${esc(l.v.place)}<br>${l.src.credit}`;
+  }
+  show(0);
+  const still = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!still && layers.length > 1) setInterval(() => { if (!document.hidden) show(i = (i + 1) % layers.length); }, 8000);
+  window.addEventListener("resize", () => layers.forEach(l => l.map.invalidateSize()));
+})();
 
 /* ---------- About ---------- */
 $("#aboutPhoto").innerHTML = SITE.photo ? `<img src="${esc(SITE.photo)}" alt="${esc(SITE.name)}">` : esc(SITE.initials);
 $("#aboutText").innerHTML = SITE.about.map(p => `<p>${esc(p)}</p>`).join("");
 $("#facts").innerHTML = SITE.facts.map(f => `<div><dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd></div>`).join("");
+if (typeof INTERESTS !== "undefined") $("#interests").innerHTML = INTERESTS.map(r => `
+  <div class="interest"><h4>${esc(r.title)}</h4><p>${esc(r.text)}</p></div>`).join("");
 $("#skills").innerHTML = SKILLS.map(s => `
   <div class="skill-card"><h3>${esc(s.group)}</h3>
     <div class="chips">${s.items.map(i => `<span class="chip">${esc(i)}</span>`).join("")}</div>
@@ -175,8 +212,26 @@ $("#outputList").innerHTML = OUTPUTS.map(o => `
       <span class="out-venue">${esc(o.venue)}</span></span></li>`).join("");
 
 /* ---------- Contact ---------- */
-const C = SITE.contact, links = [];
-if (C.email) links.push(`<a href="mailto:${esc(C.email)}">✉ ${esc(C.email)}</a>`);
-[["linkedin", "LinkedIn"], ["github", "GitHub"], ["orcid", "ORCID"], ["scholar", "Google Scholar"], ["researchgate", "ResearchGate"]]
-  .forEach(([k, label]) => { if (C[k]) links.push(`<a href="${esc(C[k])}" target="_blank" rel="noopener">${label} ↗</a>`); });
-$("#contactLinks").innerHTML = links.join("") || `<span class="contact-empty">Add your email and profile links in data.js → SITE.contact</span>`;
+const ICONS = {
+  email: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1 2.4V17h16V7.4l-8 5.3-8-5.3zM5.2 7 12 11.5 18.8 7H5.2z"/></svg>',
+  linkedin: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.65 4.77 6.1V21h-4v-5.2c0-1.24-.02-2.84-1.73-2.84-1.73 0-2 1.35-2 2.75V21h-4z"/></svg>',
+  github: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>',
+  orcid: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><text x="12" y="16" text-anchor="middle" font-size="10" font-family="Arial" font-weight="700" fill="#0e5a52">iD</text></svg>',
+  scholar: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3 1 9l11 6 9-4.9V17h2V9L12 3zm-6.5 9.6V16c0 1.9 3 3.5 6.5 3.5s6.5-1.6 6.5-3.5v-3.4L12 16.2l-6.5-3.6z"/></svg>',
+  researchgate: '<svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="4" fill="currentColor"/><text x="12" y="16" text-anchor="middle" font-size="9.5" font-family="Arial" font-weight="700" fill="#0e5a52">RG</text></svg>',
+  whatsapp: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.25-.12-1.47-.72-1.7-.8-.23-.09-.4-.13-.56.12-.17.25-.64.8-.79.97-.14.16-.29.18-.54.06a6.7 6.7 0 0 1-3.3-2.9c-.25-.43.25-.4.72-1.33.08-.16.04-.3-.02-.43l-.76-1.83c-.2-.48-.4-.41-.56-.42h-.48a.92.92 0 0 0-.66.31 2.8 2.8 0 0 0-.87 2.07c0 1.22.89 2.4 1.01 2.57.12.16 1.75 2.67 4.24 3.75 1.58.68 2.2.74 2.99.62.48-.07 1.47-.6 1.68-1.18.2-.58.2-1.08.14-1.18-.06-.1-.23-.16-.48-.28z"/></svg>'
+};
+const C = Object.assign({}, SITE.contact);
+// Fill the GitHub link automatically from the site address (username.github.io)
+if (!C.github && /\.github\.io$/i.test(location.hostname)) C.github = "https://github.com/" + location.hostname.split(".")[0];
+const contactItems = [
+  ["email", "Gmail", v => "mailto:" + v],
+  ["linkedin", "LinkedIn"], ["github", "GitHub"], ["orcid", "ORCID"],
+  ["scholar", "Google Scholar"], ["researchgate", "ResearchGate"], ["whatsapp", "WhatsApp"]
+];
+$("#contactLinks").innerHTML = contactItems.filter(([k]) => C[k]).map(([k, label, fmt]) => {
+  const href = fmt ? fmt(C[k]) : C[k];
+  const text = k === "email" ? C[k] : label;
+  const ext = k === "email" ? "" : ' target="_blank" rel="noopener"';
+  return `<a href="${esc(href)}"${ext} aria-label="${esc(label)}">${ICONS[k]}<span>${esc(text)}</span></a>`;
+}).join("");

@@ -19,37 +19,64 @@ const SITE = {
   role: "Geospatial & Environmental Researcher",
   tagline: "Mapping Ghana's changing land, water and air from space.",
   intro:
-    "MPhil Geography student at the University of Education, Winneba. I use satellite data, GIS and machine learning to study drought, urban heat, groundwater and air pollution across Ghana.",
-  location: "Winneba, Ghana",
-  coords: "5.35° N · 0.62° W",
+    "Geospatial and environmental researcher in Ghana. I combine satellite remote sensing, GIS and machine learning to monitor drought, urban heat, groundwater and air quality across Ghana and West Africa.",
+  location: "Ghana, West Africa",
+  coords: "7.95° N · 1.02° W",
   photo: "",            // e.g. "images/me.jpg"  (leave "" to show initials)
   cv: "",               // e.g. "cv.pdf" after you upload your CV
+
+  aboutTitle: "Turning satellite data into evidence for Ghana",
   about: [
-    "I grew up in western Ghana, where I watched forests disappear to illegal mining (galamsey). Wanting to understand — and measure — that change is what led me to Geography.",
-    "I graduated with First Class honours in Geography Education from the University of Education, Winneba (2021–2024), with a thesis on land use/cover change and urban expansion in Ashaiman. I am now pursuing an MPhil in Geography and volunteer as a researcher at the department's Geospatial and Environmental Lab Unit.",
+    "I am a geospatial and environmental researcher based in Ghana, currently pursuing an MPhil in Geography at the University of Education, Winneba (UEW). My work uses satellite remote sensing, geographic information systems (GIS) and machine learning to measure how land, water and air are changing across Ghana and West Africa, and what these changes mean for communities and the environment.",
+    "I hold a BA in Geography Education (First Class Honours) from UEW, where my thesis mapped land use/cover change and urban expansion in Ashaiman Municipality. I serve as a volunteer researcher in the Geospatial and Environmental Lab Unit of the Department of Geography, and I support students and researchers with GIS and statistical analysis.",
     "My long-term goal is to become a university lecturer and pass this knowledge on to the next generation of geographers."
   ],
   facts: [
     { label: "Now",      value: "MPhil Geography, UEW" },
     { label: "Lab",      value: "Geospatial & Environmental Lab Unit" },
-    { label: "Focus",    value: "Remote sensing · GIS · ML · GeoAI"},
+    { label: "Focus",    value: "Remote sensing · GIS · ML · GeoAI" },
     { label: "Based in", value: "Ghana, West Africa" }
   ],
+
+  /* Paste your links between the quotes. Empty ones are hidden.
+     GitHub is filled in automatically once the site is live.     */
   contact: {
-    email: "",          // e.g. "yourname@gmail.com"
-    linkedin: "",       // full link, e.g. "https://www.linkedin.com/in/..."
-    github: "",         // e.g. "https://github.com/yourusername"
-    orcid: "",
-    scholar: "",
-    researchgate: ""
+    email: "fjcomputers71@gmail.com",
+    linkedin: "",       // e.g. "https://www.linkedin.com/in/your-name"
+    github: "",         // leave "" to use your github.io username automatically
+    orcid: "",          // e.g. "https://orcid.org/0000-0000-0000-0000"
+    scholar: "",        // Google Scholar profile link
+    researchgate: "",   // ResearchGate profile link
+    whatsapp: ""        // e.g. "https://wa.me/233XXXXXXXXX"
   }
 };
 
+/* Background imagery behind the headline. They fade from one to the next.
+   type: "satellite" (Esri World Imagery) or "terrain" (colour-shaded relief, OpenTopoMap)
+   center: [latitude, longitude]   zoom: bigger number = closer            */
+const HERO_VIEWS = [
+  { type: "satellite", place: "Winneba coast & Muni Lagoon, Central Region", center: [5.355, -0.645], zoom: 13 },
+  { type: "terrain",   place: "Akwapim–Togo Range & Lake Volta",            center: [6.45, 0.05],   zoom: 9 },
+  { type: "satellite", place: "Lake Volta & the Afram Plains",               center: [7.05, -0.25],  zoom: 9 },
+  { type: "terrain",   place: "Gambaga Escarpment, North East Region",       center: [10.45, -0.45], zoom: 9 }
+];
+
+/* Research interests (shown under the profile). Add or remove freely. */
+const INTERESTS = [
+  { title: "Drought & climate variability", text: "Vegetation, soil moisture and rainfall indices for monitoring drought and rainfall change." },
+  { title: "Urban heat & urbanisation",     text: "Built-up expansion, land surface temperature and urban stressors on vegetation." },
+  { title: "Air quality from space",        text: "Sentinel-5P pollutant patterns, their sources and their links to cities." },
+  { title: "Groundwater & water resources", text: "Groundwater potential mapping and basin-scale hydrological analysis." },
+  { title: "Land use / land cover change",  text: "Classification and change detection of land cover, forests and settlements." },
+  { title: "GeoAI & machine learning",      text: "Random Forest and other models that turn Earth observation into predictions." },
+  { title: "Environmental health",          text: "Spatial patterns of disease and access to health services." }
+];
+
 const SKILLS = [
-  { group: "Remote sensing", items: ["Landsat 5–9", "Sentinel-1 / 2", "Sentinel-5P TROPOMI", "MODIS", "CHIRPS", "SRTM DEM", "ETC"] },
-  { group: "GIS & mapping",  items: ["ArcGIS Pro", "QGIS", "Google Earth Engine", "Pix4Dmapper (drone)", "Cartography", "R"] },
+  { group: "Remote sensing", items: ["Landsat 5–9", "Sentinel-1 / 2", "Sentinel-5P TROPOMI", "MODIS", "CHIRPS", "SRTM DEM"] },
+  { group: "GIS & mapping",  items: ["ArcGIS Pro", "QGIS", "Google Earth Engine", "Pix4Dmapper (drone)", "Cartography"] },
   { group: "Code",           items: ["GEE JavaScript", "R / RStudio", "Python (Google Colab)"] },
-  { group: "Statistics",       items: ["R", "SmartPLS", "AMOS", "SPSS", "JASP", "JAMOVI"] }
+  { group: "Analysis & GeoAI", items: ["Random Forest", "Machine learning", "Change detection", "Mann-Kendall & Sen's slope", "AHP / MIF", "PLS-SEM (SmartPLS)", "SPSS · AMOS"] }
 ];
 
 /* category must be one of the FILTERS words (used by the filter buttons) */

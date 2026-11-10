@@ -24,7 +24,7 @@
   <header class="nav" id="top">
     <a href="#top" class="brand"><span class="mono-badge" data-site="initials">EB</span><span data-site="name">Emmanuel Boateng</span></a>
     <nav class="nav-links" id="navLinks">
-      <a href="#about">About</a>
+      <a href="#about">Profile</a>
       <a href="#projects">Projects</a>
       <a href="#maps">Maps</a>
       <a href="#code">Code</a>
@@ -43,41 +43,29 @@
 
   <!-- ============ HERO ============ -->
   <section class="hero">
-    <svg class="contours" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <g fill="none" stroke="currentColor" stroke-width="1.2">
-        <path d="M-50 420 C 150 360, 260 470, 420 400 S 700 300, 860 360 S 1100 420, 1260 330"/>
-        <path d="M-50 380 C 160 320, 270 430, 430 360 S 700 260, 860 320 S 1100 380, 1260 290"/>
-        <path d="M-50 340 C 170 280, 280 390, 440 320 S 700 220, 860 280 S 1100 340, 1260 250"/>
-        <path d="M-50 300 C 180 240, 290 350, 450 280 S 700 180, 860 240 S 1100 300, 1260 210"/>
-        <path d="M-50 260 C 190 200, 300 310, 460 240 S 700 140, 860 200 S 1100 260, 1260 170"/>
-        <path d="M-50 220 C 200 160, 310 270, 470 200 S 700 100, 860 160 S 1100 220, 1260 130"/>
-        <path d="M-50 180 C 210 120, 320 230, 480 160 S 700 60, 860 120 S 1100 180, 1260 90"/>
-        <path d="M-50 460 C 140 400, 250 510, 410 440 S 700 340, 860 400 S 1100 460, 1260 370"/>
-        <path d="M-50 500 C 130 440, 240 550, 400 480 S 700 380, 860 440 S 1100 500, 1260 410"/>
-        <ellipse cx="900" cy="170" rx="70" ry="34"/>
-        <ellipse cx="900" cy="170" rx="40" ry="18"/>
-      </g>
-    </svg>
+    <!-- Background: live satellite imagery and colour-shaded terrain of Ghana -->
+    <div class="hero-bg" id="heroBg" aria-hidden="true"></div>
+    <div class="hero-shade" aria-hidden="true"></div>
 
     <div class="hero-inner">
-      <p class="eyebrow"><span class="dot"></span><span data-site="coords">5.35° N · 0.62° W</span> &nbsp;/&nbsp; <span data-site="location">Winneba, Ghana</span></p>
-      <h1 data-site="tagline">Mapping Ghana's changing land, water and air from space.</h1>
+      <p class="eyebrow"><span class="dot"></span><span data-site="coords"></span> &nbsp;/&nbsp; <span data-site="location"></span></p>
+      <h1 data-site="tagline"></h1>
       <p class="lede" data-site="intro"></p>
       <div class="hero-cta">
         <a href="#projects" class="btn btn-primary">See my work</a>
         <a href="#" class="btn btn-ghost" id="cvBtn" hidden>Download CV</a>
         <a href="#contact" class="btn btn-ghost">Get in touch</a>
       </div>
-      <div class="hero-stats" id="heroStats"></div>
     </div>
+    <div class="hero-credit" id="heroCredit"></div>
   </section>
 
   <main>
     <!-- ============ ABOUT ============ -->
     <section class="section" id="about">
       <div class="section-head">
-        <span class="kicker">01 — About</span>
-        <h2>From galamsey scars to satellite pixels</h2>
+        <span class="kicker">01 — Profile</span>
+        <h2 data-site="aboutTitle">Turning satellite data into evidence for Ghana</h2>
       </div>
       <div class="about-grid">
         <div class="about-photo" id="aboutPhoto"></div>
@@ -85,6 +73,10 @@
         <dl class="facts" id="facts"></dl>
       </div>
 
+      <h3 class="sub-head">Research interests</h3>
+      <div class="interests" id="interests"></div>
+
+      <h3 class="sub-head">Tools & methods</h3>
       <div class="skills" id="skills"></div>
     </section>
 
@@ -92,8 +84,8 @@
     <section class="section" id="projects">
       <div class="section-head">
         <span class="kicker">02 — Projects</span>
-        <h2>Research projects</h2>
-        <p class="section-sub">Studies across Ghana's climate zones, from the Guinea savanna to the coast.</p>
+        <h2>Projects undertaken</h2>
+        <p class="section-sub">Research across Ghana's landscapes, from the savanna of the north to the coast.</p>
       </div>
       <div class="filters" id="filters"></div>
       <div class="project-grid" id="projectGrid"></div>
