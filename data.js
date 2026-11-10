@@ -32,8 +32,8 @@ const SITE = {
   facts: [
     { label: "Now",      value: "MPhil Geography, UEW" },
     { label: "Lab",      value: "Geospatial & Environmental Lab Unit" },
-    { label: "Focus",    value: "Remote sensing · GIS · ML" },
-    { label: "Based in", value: "Winneba, Central Region" }
+    { label: "Focus",    value: "Remote sensing · GIS · ML · GeoAI"},
+    { label: "Based in", value: "Ghana, West Africa" }
   ],
   contact: {
     email: "",          // e.g. "yourname@gmail.com"
@@ -46,10 +46,10 @@ const SITE = {
 };
 
 const SKILLS = [
-  { group: "Remote sensing", items: ["Landsat 5–9", "Sentinel-1 / 2", "Sentinel-5P TROPOMI", "MODIS", "CHIRPS", "SRTM DEM"] },
-  { group: "GIS & mapping",  items: ["ArcGIS Pro", "QGIS", "Google Earth Engine", "Pix4Dmapper (drone)", "Cartography"] },
+  { group: "Remote sensing", items: ["Landsat 5–9", "Sentinel-1 / 2", "Sentinel-5P TROPOMI", "MODIS", "CHIRPS", "SRTM DEM", "ETC"] },
+  { group: "GIS & mapping",  items: ["ArcGIS Pro", "QGIS", "Google Earth Engine", "Pix4Dmapper (drone)", "Cartography", "R"] },
   { group: "Code",           items: ["GEE JavaScript", "R / RStudio", "Python (Google Colab)"] },
-  { group: "Analysis",       items: ["Random Forest", "Change detection", "Mann-Kendall & Sen's slope", "AHP / MIF", "PLS-SEM (SmartPLS)", "SPSS · AMOS"] }
+  { group: "Statistics",       items: ["R", "SmartPLS", "AMOS", "SPSS", "JASP", "JAMOVI"] }
 ];
 
 /* category must be one of the FILTERS words (used by the filter buttons) */
